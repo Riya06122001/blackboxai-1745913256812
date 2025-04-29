@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Generative AI HR Chatbot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    /* Scrollbar styling for chat container */
+    .chat-messages::-webkit-scrollbar {
+      width: 8px;
+    }
+    .chat-messages::-webkit-scrollbar-thumb {
+      background-color: rgba(100, 116, 139, 0.5);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-r from-purple-100 via-pink-50 to-yellow-100 flex items-center justify-center min-h-screen p-4 relative overflow-hidden">
+  <div class="absolute inset-0 -z-10 opacity-20 bg-[url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1470&q=80')] bg-cover bg-center"></div>
+  <div class="absolute inset-0 -z-20 opacity-10 bg-[url('https://images.unsplash.com/photo-1526378723032-7a1a3a7a7a7a?auto=format&fit=crop&w=1470&q=80')] bg-cover bg-center"></div>
+  <div class="flex flex-col w-full max-w-xl h-[80vh] bg-white bg-opacity-90 rounded-lg shadow-lg overflow-hidden backdrop-blur-sm">
+  <header class="bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 text-white p-4 flex items-center space-x-4 font-extrabold text-xl tracking-wide drop-shadow-lg">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/HR_icon.svg/120px-HR_icon.svg.png" alt="HR Logo" class="h-8 w-8" />
+    <span>HR Generative AI Chatbot</span>
+  </header>
+    <main class="flex-1 overflow-y-auto p-4 space-y-4 chat-messages flex flex-col items-start" id="chatMessages" aria-live="polite" aria-label="Chat messages">
+      <!-- Chat messages will appear here -->
+    </main>
+    <form id="chatForm" class="flex border-t border-gray-200 p-4 space-x-2" aria-label="Send message form">
+      <input
+        type="text"
+        id="chatInput"
+        class="flex-1 border border-gray-300 rounded-l-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        placeholder="Ask HR anything..."
+        aria-label="Chat input"
+        autocomplete="off"
+        required
+      />
+      <button
+        type="submit"
+        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-md transition-colors duration-200"
+        aria-label="Send message"
+      >
+        <i class="fas fa-paper-plane"></i>
+      </button>
+      <button
+        type="button"
+        id="clearChatBtn"
+        class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-md transition-colors duration-200"
+        aria-label="Clear chat"
+      >
+        <i class="fas fa-trash-alt"></i>
+      </button>
+    </form>
+  </div>
+
+    <script>
+      const chatForm = document.getElementById('chatForm');
+      const chatInput = document.getElementById('chatInput');
+      const chatMessages = document.getElementById('chatMessages');
+      const clearChatBtn = document.getElementById('clearChatBtn');
+
+      function createMessageElement(message, sender) {
+        const messageEl = document.createElement('div');
+        messageEl.classList.add('max-w-[70%]', 'px-4', 'py-3', 'rounded-xl', 'shadow-lg', 'animate-fadeIn', 'break-words', 'whitespace-pre-wrap', 'text-sm', 'leading-relaxed', 'font-medium', 'mb-1');
+        if (sender === 'user') {
+          messageEl.classList.add('bg-gradient-to-r', 'from-pink-400', 'via-red-400', 'to-yellow-400', 'text-white', 'rounded-br-none', 'self-end', 'text-right');
+        } else {
+          messageEl.classList.add('bg-gradient-to-r', 'from-purple-300', 'via-indigo-400', 'to-blue-400', 'text-white', 'rounded-bl-none', 'self-start', 'text-left');
+        }
+        messageEl.textContent = message;
+        return messageEl;
+      }
+
+      chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const userMessage = chatInput.value.trim();
+        if (!userMessage) return;
+
+        // Display user message
+        const userMessageEl = createMessageElement(userMessage, 'user');
+        chatMessages.appendChild(userMessageEl);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        chatInput.value = '';
+        chatInput.disabled = true;
+
+        // Simulate AI response (replace with real API call)
+        setTimeout(() => {
+          const aiResponse = "Sorry, I am not connected to the HR database yet.";
+          const aiMessageEl = createMessageElement(aiResponse, 'bot');
+          chatMessages.appendChild(aiMessageEl);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+          chatInput.disabled = false;
+          chatInput.focus();
+        }, 1000);
+      });
+
+      clearChatBtn.addEventListener('click', () => {
+        chatMessages.innerHTML = '';
+        chatInput.focus();
+      });
+  </script>
+
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.3s ease forwards;
+    }
+  </style>
+</body>
+</html>
